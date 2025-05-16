@@ -1,4 +1,4 @@
-package DesignPatterns2.CompositeFileDesignPattern;
+package DesignPatterns.CompositeFileDesignPattern;
 
 public class File implements FileSystem {
 
