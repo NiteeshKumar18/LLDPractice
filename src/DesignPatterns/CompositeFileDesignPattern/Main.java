@@ -1,6 +1,4 @@
-package DesignPatterns.CompositeFileDesignPattern;
-
-import TicTacToe.TicTacToe;
+package DesignPatterns2.CompositeFileDesignPattern;
 
 public class Main {
     public static void main(String[] args) {

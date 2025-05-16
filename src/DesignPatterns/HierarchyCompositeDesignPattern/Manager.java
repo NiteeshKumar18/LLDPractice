@@ -1,4 +1,4 @@
-package HierarchyCompositeDesignPattern;
+package DesignPatterns.HierarchyCompositeDesignPattern;
 
 import java.util.ArrayList;
 import java.util.List;

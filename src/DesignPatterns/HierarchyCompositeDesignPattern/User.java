@@ -1,4 +1,4 @@
-package HierarchyCompositeDesignPattern;
+package DesignPatterns.HierarchyCompositeDesignPattern;
 
 public class User implements Hierarchy {
     private final String userId;

@@ -1,4 +1,4 @@
-package DesignPatterns.CompositeFileDesignPattern;
+package DesignPatterns2.CompositeFileDesignPattern;
 
 public interface FileSystem {
 

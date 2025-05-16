@@ -1,6 +1,4 @@
-package HierarchyCompositeDesignPattern;
-
-import TicTacToe.TicTacToe;
+package DesignPatterns.HierarchyCompositeDesignPattern;
 
 public class Main {
     public static void main(String[] args) {
