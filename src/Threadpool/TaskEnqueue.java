@@ -34,4 +34,8 @@ public class TaskEnqueue {
         stopped = true;
         notifyAll();
     }
+
+    public int getQueueSize() {
+        return queue.size();
+    }
 }

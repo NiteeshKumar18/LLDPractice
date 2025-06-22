@@ -7,6 +7,7 @@ public class ThreadPool {
     private boolean isStopped = false;
     private TaskEnqueue taskEnqueue;
     private PoolWorker[] workers;
+    private int MAX_SIZE = 10;
 
 
     public ThreadPool(int size) {
@@ -14,9 +15,21 @@ public class ThreadPool {
         workers = new PoolWorker[size];
 
         for (int i = 0; i < size; i++) {
-            this.workers[i]= new PoolWorker(this,this.taskEnqueue);
+            this.workers[i] = new PoolWorker(this, this.taskEnqueue);
             this.workers[i].start();
         }
+    }
+
+    public synchronized boolean enqueueWithTimeout(Runnable task, long timeoutMillis) throws InterruptedException {
+        long start = System.currentTimeMillis();
+        while (taskEnqueue.getQueueSize() >= MAX_SIZE && !isStopped) {
+            long remaining = timeoutMillis - (System.currentTimeMillis() - start);
+            if (remaining <= 0) return false;
+            wait(remaining);
+        }
+        taskEnqueue.enqueue(task);
+        notify();
+        return true;
     }
 
 
