@@ -5,6 +5,7 @@ public class Node {
     private int value;
     private Node prev;
     private Node next;
+    private Long expiryTime;
 
 
     public Node(int key, int value, Node prev, Node next) {
@@ -14,9 +15,10 @@ public class Node {
         this.next = next;
     }
 
-    public Node(int key, int value) {
+    public Node(int key, int value,long expiryTime) {
         this.key = key;
         this.value = value;
+        this.expiryTime = expiryTime;
     }
 
 
@@ -46,6 +48,11 @@ public class Node {
 
     public int getKey() {
         return this.key;
+    }
+
+
+    public boolean isExpired() {
+        return System.currentTimeMillis() > expiryTime;
     }
 
 }
