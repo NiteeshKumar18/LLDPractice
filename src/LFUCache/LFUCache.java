@@ -58,11 +58,15 @@ public class LFUCache {
 
     public void updateFreq(Node node) {
         LinkedHashSet<Node> set = freqMap.get(node.getFrequency());
-        set.remove(node);
-        if (set.isEmpty()) {
-            freqMap.remove(node.getFrequency());
-            if (node.getFrequency() == minFrequency) {
-                minFrequency++;
+        if (set != null) {
+            set.remove(node);
+
+            // set.remove(node);
+            if (set.isEmpty()) {
+                freqMap.remove(node.getFrequency());
+                if (node.getFrequency() == minFrequency) {
+                    minFrequency++;
+                }
             }
         }
 

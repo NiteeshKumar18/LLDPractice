@@ -9,7 +9,7 @@ public class Node {
     public Node(String key, int value) {
         this.key = key;
         this.value = value;
-        this.frequency = 0;
+        this.frequency = 1;
     }
 
     // Getter for key
