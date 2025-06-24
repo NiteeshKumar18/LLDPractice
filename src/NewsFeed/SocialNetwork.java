@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 public class SocialNetwork {
 
     private Map<String, User> userIdToUserMap;
-    private int postIdCounter=0;
+    private int postIdCounter = 0;
 
 
     public SocialNetwork() {
@@ -28,6 +28,7 @@ public class SocialNetwork {
         User followee = createOrGetUser(followeeId);
         follower.removeFollower(followeeId);
     }
+
     public void post(String userId) {
         User user = createOrGetUser(userId);
         Post post = new Post(postIdCounter++, userId, System.currentTimeMillis());
