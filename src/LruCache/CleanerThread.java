@@ -49,4 +49,14 @@ public class CleanerThread extends Thread {
             lock.unlock();
         }
     }
+
+
+    /*
+    If we get 100X traffic what will we do??
+    1) Using distributed cache, i.e we will have L1 cache which is local and L2 cache (DIstributed redis cache)
+    2) L2 cache with consistent hashing (Only 1/N% keys needed to be moved)
+    3) Keep an eye on eviction strategies, are we having too many cache misses hence cauing too many cache reloads
+    4)monitoring and logging, tracking p99, p90 etc
+
+     */
 }

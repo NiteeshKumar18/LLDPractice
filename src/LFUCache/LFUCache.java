@@ -1,6 +1,7 @@
 package LFUCache;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LFUCache {
 
@@ -9,38 +10,50 @@ public class LFUCache {
     private Map<String, Node> keyToNode;
     private Map<Integer, LinkedHashSet<Node>> freqMap;
     private int minFrequency;
+    private final ReentrantLock lock;
 
 
     public LFUCache(int capacity) {
         this.capacity = capacity;
         keyToNode = new HashMap<>();
         freqMap = new HashMap<>();
+        this.lock = new ReentrantLock();
     }
 
 
     public int getValue(String key) {
-        if (!keyToNode.containsKey(key)) {
-            return -1;
+        lock.lock();
+        try {
+            if (!keyToNode.containsKey(key)) {
+                return -1;
+            }
+            Node node = keyToNode.get(key);
+            updateFreq(node);
+            return node.getValue();
+        } finally {
+            lock.unlock();
         }
-        Node node = keyToNode.get(key);
-        updateFreq(node);
-        return node.getValue();
     }
 
 
     public void putValue(String key, int value) {
-        if (keyToNode.containsKey(key)) {
-            Node node = keyToNode.get(key);
-            node.setValue(value);
-            updateFreq(node);
-        } else {
-            if (keyToNode.size() >= capacity) {
-                evictLFU();
+        lock.lock();
+        try {
+            if (keyToNode.containsKey(key)) {
+                Node node = keyToNode.get(key);
+                node.setValue(value);
+                updateFreq(node);
+            } else {
+                if (keyToNode.size() >= capacity) {
+                    evictLFU();
+                }
+                Node node = new Node(key, value);
+                keyToNode.put(key, node);
+                freqMap.computeIfAbsent(1, k -> new LinkedHashSet<>()).add(node);
+                minFrequency = 1;
             }
-            Node node = new Node(key, value);
-            keyToNode.put(key, node);
-            freqMap.computeIfAbsent(1, k -> new LinkedHashSet<>()).add(node);
-            minFrequency = 1;
+        } finally {
+            lock.unlock();
         }
     }
 
