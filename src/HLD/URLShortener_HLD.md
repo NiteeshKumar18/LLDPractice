@@ -139,3 +139,44 @@ flowchart LR
     CS -.-> MON
 ```
 
+## Full Design Diagram (All Components)
+```mermaid
+flowchart LR
+    C[Client] --> DNS[DNS]
+    C -->|GET /code| CDN[CDN<br/>edge cache for redirects]
+    C -->|POST /v1/urls| LB
+    CDN -. miss .-> LB[Edge Load Balancer<br/>TLS termination]
+    LB --> GW[API Gateway<br/>routing + rate limit]
+    GW <-->|validate API key| AUTH[Auth Service]
+    AUTH --> AKDB[(API Key Store)]
+    GW <--> RL[(Rate Limit Counters<br/>Redis)]
+    GW --> ILB[Internal LB / Service Discovery]
+
+    ILB -->|POST /v1/urls| CS[Create Service<br/>local ID range]
+    ILB -->|GET /code| RS[Redirect Service<br/>in-process hot-link cache]
+
+    CS -->|fetch ID range| IDG[ID Range Coordinator<br/>ZooKeeper primary]
+    IDG -.-> IDG2[ZooKeeper standby]
+    CS -->|conditional write<br/>if not exists| DB
+
+    RS -->|1. lookup| R[(Redis Cache<br/>LRU, TTL, negative cache)]
+    RS -->|2. on miss| DB[(Key-Value DB<br/>sharded by code)]
+    RS -->|3. fill cache| R
+    DB -.replication, multi-AZ.-> REP[(Replicas)]
+
+    RS -->|click event, async| K[[Kafka]]
+    K --> AN[Analytics Consumer]
+    AN --> OLAP[(ClickHouse / Warehouse)]
+    OLAP --> DASH[Dashboard]
+    K -.failed events.-> DLQ[[Dead Letter Queue]]
+
+    JOB[Expiry Cleanup Job] --> DB
+    JOB -.expiring soon.-> NS[Notification Service<br/>optional]
+    NS --> EMAIL[Email Provider]
+
+    CS -.-> MON[Metrics + Logs + Traces + Alerts]
+    RS -.-> MON
+    K -.consumer lag.-> MON
+```
+
+
