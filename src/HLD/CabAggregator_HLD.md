@@ -50,7 +50,7 @@
 - `POST /v1/rides/{id}/arrived`, `POST /v1/rides/{id}/start` body `{otp}`, `POST /v1/rides/{id}/complete`
 - `GET /v1/drivers/me/earnings?from=&to=&cursor=` (cursor pagination)
 
-**Real-time (WebSocket)**
+**Real-time (WebSocket)*f*
 - Driver sends `{lat, lng, heading, ts}` every 4 s. Driver receives ride offers.
 - Rider subscribes to `ride:{id}` and receives driver location and status changes.
 - Why WebSocket: two-way, low overhead per message. Fall back to push notification (FCM/APNs) if the app is in the background.
