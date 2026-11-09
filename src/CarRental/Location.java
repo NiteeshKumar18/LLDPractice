@@ -13,4 +13,13 @@ public class Location {
         this.city = city;
         this.pinCode = pinCode;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    @Override
+    public String toString() {
+        return city + ", " + state + " " + pinCode;
+    }
 }

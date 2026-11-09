@@ -26,7 +26,8 @@ public abstract class ATMState {
     public void cancelTransaction() {
     }
 
-    public abstract void depositCash(int amount,ATM atm, BankAccount bankAccount) throws Exception;
+    public void depositCash(int amount,ATM atm, BankAccount bankAccount) throws Exception {
+    }
 
 
 }
