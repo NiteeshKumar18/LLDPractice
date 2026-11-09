@@ -10,12 +10,16 @@ public class Board {
         this.board = new PlayingPiece[SIZE][SIZE];
     }
 
-    public PlayingPiece[][] getBoard() {
-        return board;
+    public boolean placePiece(int row, int col, PlayingPiece piece) {
+        if (!checkIfMoveIsValid(row, col)) {
+            return false;
+        }
+        board[row][col] = piece;
+        return true;
     }
 
-    public boolean checkIfMoveIsValid(int row, int col, int size) {
-        if (row >= size || col >= size) {
+    private boolean checkIfMoveIsValid(int row, int col) {
+        if (row >= SIZE || col >= SIZE) {
             return false;
         }
         if (row < 0 || col < 0) {

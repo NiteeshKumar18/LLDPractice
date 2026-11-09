@@ -34,15 +34,13 @@ public class TicTacToe {
             int row = sc.nextInt();
             System.out.println("Please enter column for your turn");
             int col = sc.nextInt();
-            boolean isValidMove = board.checkIfMoveIsValid(row, col, board.getBoard().length);
-            System.out.println(isValidMove);
-            if (!isValidMove) {
+            var playerPiece = player.getPlayingPiece();
+            boolean isPiecePlaced = board.placePiece(row, col, playerPiece);
+            if (!isPiecePlaced) {
                 System.out.println("Invalid move, please try again");
                 board.printBoard();
                 listOfPlayers.addFirst(player);
             } else {
-                var playerPiece = player.getPlayingPiece();
-                board.getBoard()[row][col] = playerPiece;
                 board.printBoard();
                 boolean isGameFinished = board.checkIfGameIsFinishedForPiece(row, col, playerPiece);
                 if (isGameFinished) {
